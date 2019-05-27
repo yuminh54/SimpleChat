@@ -51,6 +51,12 @@ class ChatThread extends Thread{
 					break;
 				if(line.indexOf("/to ") == 0){
 					sendmsg(line);
+				//userlist 추가
+				if(line.equals("/userlist"))
+					send_userlist();
+				//금지어
+				if(line.equals('A') || line.equals("B") || line.equals("C") || line.equals("D") || line.equals("E"))
+					warning();
 				}else
 					broadcast(id + " : " + line);
 			}
@@ -92,4 +98,37 @@ class ChatThread extends Thread{
 			}
 		}
 	} // broadcast
+	public void warning(){
+		//아이디에게 경고
+		synchronized(hm){
+			Object id = this.id; 
+			try{
+				id = br.readLine();
+				if(id != null){
+					PrintWriter pw = (PrintWriter)hm.get(id);
+					pw.println("The word is prohibited");
+					pw.flush();
+				} // if
+			}
+			catch(Exception ex){
+				System.out.println(ex);
+			}
+		}
+	} // warning
+	public void send_userlist(){
+		synchronized(hm){
+			Collection collection = hm.values();
+			Iterator iter = collection.iterator();
+			while(iter.hasNext()){
+				PrintWriter pw = (PrintWriter)iter.next();
+				Set key = hm.keySet();
+				String valueName = (String) hm.get(key);
+				pw.println(valueName);
+				pw.flush();
+			}
+			
+			
+		} // send_userlist()
+	}
+	
 }
