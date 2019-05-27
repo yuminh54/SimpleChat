@@ -30,6 +30,7 @@ public class ChatClient {
 					endflag = true;
 					break;
 				}
+				
 			}
 			System.out.println("Connection closed.");
 		}catch(Exception ex){
