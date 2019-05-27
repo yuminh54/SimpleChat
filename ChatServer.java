@@ -51,11 +51,13 @@ class ChatThread extends Thread{
 					break;
 				if(line.indexOf("/to ") == 0){
 					sendmsg(line);
-				//userlist 추가
+				//"/userlist"를 입력받으면
 				if(line.equals("/userlist"))
+					//함수 호출
 					send_userlist();
-				//금지어
+				//금지어들을 입력받으면
 				if(line.equals('A') || line.equals("B") || line.equals("C") || line.equals("D") || line.equals("E"))
+					//함수 호출
 					warning();
 				}else
 					broadcast(id + " : " + line);
@@ -101,29 +103,28 @@ class ChatThread extends Thread{
 	public void warning(){
 		//아이디에게 경고
 		synchronized(hm){
-			Object id = this.id; 
 			try{
-				id = br.readLine();
+				//id = br.readLine(); // 읽어들인 id
 				if(id != null){
-					PrintWriter pw = (PrintWriter)hm.get(id);
-					pw.println("The word is prohibited");
+					PrintWriter pw = (PrintWriter)hm.get(id); // hm의 id에게 쓰기
+					pw.println("The word is prohibited"); // 다음과 같이 출력
 					pw.flush();
 				} // if
 			}
-			catch(Exception ex){
+			catch(Exception ex){ // try에 대한 catch
 				System.out.println(ex);
 			}
 		}
 	} // warning
 	public void send_userlist(){
 		synchronized(hm){
-			Collection collection = hm.values();
-			Iterator iter = collection.iterator();
-			while(iter.hasNext()){
+			Collection collection = hm.values(); // hm의 value들의 모음
+			Iterator iter = collection.iterator(); // 모음을 출력하는 iter
+			while(iter.hasNext()){ 
 				PrintWriter pw = (PrintWriter)iter.next();
 				Set key = hm.keySet();
-				String valueName = (String) hm.get(key);
-				pw.println(valueName);
+				String keyName = (String) hm.get(key); // 아이디를 keyName으로 
+				pw.println(keyName);//아이디 쓰기
 				pw.flush();
 			}
 			
